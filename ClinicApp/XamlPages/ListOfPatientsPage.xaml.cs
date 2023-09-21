@@ -57,7 +57,7 @@ namespace ClinicApp.XamlPages
             }
             catch (SqlException)
             {
-                var err = ConfigurationSettings.AppSettings["dbError"].ToString();
+                var err = ConfigurationManager.AppSettings["dbError"].ToString();
                 MessageBox.Show(err, "Ошибка");
                 throw;
             }
@@ -97,7 +97,7 @@ namespace ClinicApp.XamlPages
                     }
                     catch (SqlException)
                     {
-                        var err = ConfigurationSettings.AppSettings["dbError"].ToString();
+                        var err = ConfigurationManager.AppSettings["dbError"].ToString();
                         MessageBox.Show(err, "Ошибка");
                         throw;
                     }
@@ -126,7 +126,7 @@ namespace ClinicApp.XamlPages
                 }
                 catch (SqlException)
                 {
-                    var err = ConfigurationSettings.AppSettings["dbError"].ToString();
+                    var err = ConfigurationManager.AppSettings["dbError"].ToString();
                     MessageBox.Show(err, "Ошибка");
                     throw;
                 }
@@ -189,7 +189,7 @@ namespace ClinicApp.XamlPages
                     }
                     catch (SqlException)
                     {
-                        var err = ConfigurationSettings.AppSettings["dbError"].ToString();
+                        var err = ConfigurationManager.AppSettings["dbError"].ToString();
                         MessageBox.Show(err, "Ошибка");
                         throw;
                     }
@@ -231,7 +231,7 @@ namespace ClinicApp.XamlPages
             }
             catch (SqlException)
             {
-                var err = ConfigurationSettings.AppSettings["dbError"].ToString();
+                var err = ConfigurationManager.AppSettings["dbError"].ToString();
                 MessageBox.Show(err, "Ошибка");
                 throw;
             }

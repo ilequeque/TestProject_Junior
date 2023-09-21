@@ -95,11 +95,17 @@ namespace ClinicApp.XamlPages
                     #region modifying mode
                     else
                     {
-                        m_request.DateOfRequest = dateOfRequest.GetValueOrDefault(DateTime.Now);
-                        m_request.Purpose = purpose;
-                        m_request.RequestType = requestType;
-                        m_request.Patient = new PatientCard();
-                        isSucceed = repository.ModifyRequest(m_request);
+                        if (m_request != null)
+                        {
+                            m_request.DateOfRequest = dateOfRequest.GetValueOrDefault(DateTime.Now);
+                            m_request.Purpose = purpose;
+                            m_request.RequestType = requestType;
+                            isSucceed = repository.ModifyRequest(m_request);
+                        }
+                        else
+                        {
+                            isSucceed = false; // Если запись не существует, помечаем как неудачу
+                        }
                     }
                     #endregion
                     if (isSucceed && mainFrame.CanGoBack)
@@ -117,8 +123,8 @@ namespace ClinicApp.XamlPages
             }
             catch (InvalidOperationException)
             {
-                var err =   "Операция не может быть выполнена.\n" +
-                            "Скорее всего какие то проблемы с базой данных. \n" +
+                var err = "Операция не может быть выполнена.\n" +
+                            "Скорее всего какие-то проблемы с базой данных. \n" +
                             "Рекомендую обратиться к разработчику";
                 MessageBox.Show(err, "Ошибка");
                 throw;
@@ -126,7 +132,7 @@ namespace ClinicApp.XamlPages
             catch
             {
                 //better to close the application than proceed with unknown error
-                MessageBox.Show("Что то пошло не так. Приложение будет закрыто.", "Ошибка!");
+                MessageBox.Show("Что-то пошло не так. Приложение будет закрыто.", "Ошибка!");
                 throw;
             }
             finally
@@ -135,6 +141,7 @@ namespace ClinicApp.XamlPages
                 btnSubmit.IsEnabled = true;
             }
         }
+
         private void InitializeFields(Request requestToModify)
         {
             datePickerRequest.SelectedDate = requestToModify.DateOfRequest;

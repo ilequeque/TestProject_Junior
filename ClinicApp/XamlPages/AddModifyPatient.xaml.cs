@@ -74,6 +74,15 @@ namespace ClinicApp.XamlPages
                     messageBuilder.Append("Дата рождения - обязательное поле для ввода.\n");
                 }
                 #endregion
+                #region Checking entered date of birth
+                if (dateOfBirth == null || dateOfBirth.Value.Year < 1900)
+                {
+                    txtNotify.Foreground = Brushes.Red;
+                    txtNotify.BorderBrush = Brushes.Red;
+                    status = false;
+                    messageBuilder.Append("Введите корректную дату рождения.\n");
+                }
+                #endregion
                 #region Checking entered address
                 if (String.IsNullOrEmpty(address))
                 {
@@ -96,16 +105,28 @@ namespace ClinicApp.XamlPages
                     #region adding mode
                     if (!isModifyingMode)
                     {
+                        var dateOfBirthValue = dateOfBirth.GetValueOrDefault();
+
+                        // Проверка на допустимость даты рождения
+                        if (dateOfBirthValue > DateTime.Now)
+                        {
+                            // Дата рождения находится в будущем, обработайте эту ошибку
+                            txtNotify.Foreground = Brushes.Red;
+                            txtNotify.BorderBrush = Brushes.Red;
+                            txtNotify.Content = "Дата рождения не может быть в будущем!";
+                            return; // Выход из метода, не выполняя добавление
+                        }
+
                         var patientCard = new PatientCard()
                         {
                             Name = name,
                             PhoneNumber = phone.ToString(),
-                            DateOfBirth = dateOfBirth.GetValueOrDefault(),
+                            DateOfBirth = dateOfBirthValue,
                             Address = address,
                             Gender = gender
                         };
-                        var sucess = repository.AddPatientCard(patientCard);
-                        if (await sucess)
+                        var success = repository.AddPatientCard(patientCard);
+                        if (await success)
                         {
                             txtNotify.Foreground = Brushes.Black;
                             txtNotify.BorderBrush = Brushes.LimeGreen;
@@ -125,20 +146,13 @@ namespace ClinicApp.XamlPages
                         repository.ModifyPatientCard(m_cardToModify);
                         mainFrame.GoBack();
                     }
-                    #endregion
                 }
                 #endregion
-                else
-                {
-                    txtNotify.Foreground = Brushes.Black;
-                    txtNotify.BorderBrush = Brushes.Red;
-                    txtNotify.Content = messageBuilder.ToString();
-                }
             }
             #region catch, finaly
             catch (SqlException)
             {
-                var err = ConfigurationSettings.AppSettings["dbError"].ToString();
+                var err = ConfigurationManager.AppSettings["dbError"].ToString();
                 MessageBox.Show(err, "Ошибка");
                 throw;
             }
@@ -172,3 +186,4 @@ namespace ClinicApp.XamlPages
         }
     }
 }
+#endregion
