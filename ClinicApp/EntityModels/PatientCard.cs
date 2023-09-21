@@ -22,5 +22,25 @@ namespace ClinicApp.EntityModels
         public String Address { get; set; }
         public String PhoneNumber { get; set; }
         public List<Request> Requests { get; set; }
+        public int Age
+        {
+            get
+            {
+                if (DateOfBirth != null)
+                {
+                    DateTime currentDate = DateTime.Now;
+                    int age = currentDate.Year - DateOfBirth.Year;
+
+                    // Учесть, что возраст может уменьшиться, если день рождения уже был в этом году
+                    if (currentDate < DateOfBirth.AddYears(age))
+                    {
+                        age--;
+                    }
+
+                    return age;
+                }
+                return 0; // В случае отсутствия даты рождения
+            }
+        }
     }
 }
