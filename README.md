@@ -32,8 +32,6 @@ public int Age
                 {
                     DateTime currentDate = DateTime.Now;
                     int age = currentDate.Year - DateOfBirth.Year;
-
-                    // Учесть, что возраст может уменьшиться, если день рождения уже был в этом году
                     if (currentDate < DateOfBirth.AddYears(age))
                     {
                         age--;
