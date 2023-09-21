@@ -23,7 +23,7 @@ if (dateOfBirth == null || dateOfBirth.Value.Year < 1900)
 
 2. на форму со списком пациентов добавить столбец «Возраст», в котором соответственно необходимо вывести полный возраст пациента на текущей день
 добавил код для добавления поля "Возраст":
-        
+<code>
 public int Age
         {
             get
@@ -44,5 +44,6 @@ public int Age
         }
 
 а для показа возраста пациента в приложении использовал:
+<code>
 <DataGridTextColumn x:Name="ageColumn" Binding="{Binding Age}" Header="Возраст" Width="80"/>
 
